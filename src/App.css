@@ -37,3 +37,23 @@
     transform: translateY(0px);
   }
 }
+
+
+.swapi-example {
+  margin: 1rem;
+  padding: 1rem;
+  border: 1px solid;
+  border-radius: 1rem;
+}
+
+input, button {
+  border: 1px solid;
+  padding: 0.5rem;
+  font-size: 1rem;
+}
+
+button {
+  background-color: black;
+  color: white;
+  border-color: black;
+}

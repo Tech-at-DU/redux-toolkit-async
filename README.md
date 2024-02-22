@@ -14,6 +14,14 @@ This example uses RTK Query which sets up RTK to load async data into the store.
 
 https://redux-toolkit.js.org/rtk-query/overview
 
+There are two examples: SWAPI and SWAPI2. 
+
+The SWAPI example uses a query to load data. In this example the query is executed when the component is RENDERED! Notice that data is loaded when the component mounts, and when state updates. 
+
+The SWAPI2 example uses a lzy query. This query runs when the trigger is executed. In this example data is not loaded until the button is clicked. 
+
+Compare these two files and test both components to get an idea of how these are working and what the differences are! 
+
 ## Try it yourself! 
 
 Try it youself by following these steps: 

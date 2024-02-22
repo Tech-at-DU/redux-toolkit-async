@@ -1,15 +1,22 @@
 import "./App.css"
 import { Counter } from "./features/counter/Counter"
 import { Quotes } from "./features/quotes/Quotes"
-// import logo from "./logo.svg"
 
 import { SWAPI } from "./features/swapi/SWAPI"
+import { SWAPI2 } from "./features/swapi/SWAPI2"
 
 const App = () => {
   return (
     <div className="App">
       <header className="App-header">
-        <SWAPI />
+        <div className="swapi-example">
+          <h1>SAWPI</h1>
+          <SWAPI /> 
+        </div>
+        <div className="swapi-example">
+        <h1>SAWPI2</h1>
+          <SWAPI2 />
+        </div>
         <Counter />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
