@@ -32,4 +32,4 @@ export const swapiApiSlice = createApi({
 
 // This is a hook used to load data from this api. 
 // There is sme magic here where the name "getSwapi" is turned into "useGetSwapiQuery"
-export const { useGetSwapiQuery } = swapiApiSlice
+export const { useGetSwapiQuery, useLazyGetSwapiQuery } = swapiApiSlice
