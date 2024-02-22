@@ -22,6 +22,11 @@ The SWAPI2 example uses a lzy query. This query runs when the trigger is execute
 
 Compare these two files and test both components to get an idea of how these are working and what the differences are! 
 
+## Challenges!
+
+1. Modify the components presented here. The SWAPI components just display, eye color, and mass. Display a few more features as an easy challenge. 
+2. Make a new query api using openweathermap. Use the components here as a guide. Follow the steps in the following section. 
+
 ## Try it yourself! 
 
 Try it youself by following these steps: 
