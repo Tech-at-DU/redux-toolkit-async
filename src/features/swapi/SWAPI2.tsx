@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useGetSwapiQuery, useLazyGetSwapiQuery } from './swapiApiSlice'
+import { useLazyGetSwapiQuery } from './swapiApiSlice'
 // Import the hook from your slice
 
 // This component displays both the form and the data loaded from the api hook. 
@@ -19,7 +19,7 @@ export const SWAPI2 = () => {
     // If there is an error. 
     if (isError) {
       // Display an error (I'm missing types for this!)
-      return <div>swapi Error: {error.status} {error.data.detail}</div>
+      return <div>swapi Error!</div>
     }
 
     if (isLoading) {

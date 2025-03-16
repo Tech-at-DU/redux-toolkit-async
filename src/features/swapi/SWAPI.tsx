@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useGetSwapiQuery, useLazyGetSwapiQuery } from './swapiApiSlice'
+import { useGetSwapiQuery } from './swapiApiSlice'
 // Import the hook from your slice
 
 // This component displays both the form and the data loaded from the api hook. 
