@@ -1,36 +1,38 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 
-// Here we are making a "slice" that works with async data. 
-// Start with createApi and fetchBaseQuery.
+// This defines an API slice for asynchronous data fetching using RTK Query.
+// We use createApi and fetchBaseQuery to set it up.
 
-// Create a new slice with createApi
-// This takes an object with fields fo: baseQuery, reducerPath, tagTypes, endpoints
 export const swapiApiSlice = createApi({
-    // This base url for the query that returns data. 
-    // I used SWAPI. This url requires a param at the end. This will be added at "endpoints"
+    // baseQuery is the function that performs the data fetching.
+    // We're using fetchBaseQuery with a base URL for the SWAPI (Star Wars API).
+    // Note: this base URL expects a parameter at the end (e.g., /1, /2, etc.)
     baseQuery: fetchBaseQuery({ baseUrl: "https://swapi.dev/api/people" }),
-    // This is the reducer that handles this data
+
+    // The reducerPath is the key in the Redux store where this slice's state will be stored.
     reducerPath: "swapiApi",
-    // I'm not sure what this does need to look it up. 
+
+    // tagTypes are used for cache invalidation and re-fetching. We're tagging responses as "SWAPI".
     tagTypes: ["SWAPI"],
-    // Here is where the complete request is created. This is a function that 
-    // receives a "build" as a parameter. 
-    endpoints: build => ({
-        // The name here is used to generate the hook below. 
-        // NOTE! The first type here is the type for the data you are expecting! 
-        // I cheated and typed it as any! 
-        // Second is the argument type. Our query takes a number
+
+    // The endpoints section defines individual operations that can be performed with this API slice.
+    // It receives a "build" object used to define different types of queries and mutations.
+    endpoints: (build) => ({
+        // Define a query endpoint named "getSwapi".
+        // The hook generated from this will be called useGetSwapiQuery.
+        // The first type parameter is the expected response shape (set to any here).
+        // The second is the type of the argument passed to the query (a number).
         getSwapi: build.query<any, number>({
-            // id is a parameter supplied by your action provides a string that is tacked
-            // on to the end of the url. In this case it's the id of the character. 
+            // The query function constructs the URL for the request.
+            // The 'id' argument is used to fetch a specific character by appending it to the base URL.
             query: (id = 1) => `/${id}`,
-            // Not sure how the tags are working here. 
-            providesTags: (results, error, id) => [{ type: "SWAPI", id }]
+
+            // providesTags marks the response with a tag, useful for caching and re-fetching.
+            providesTags: (result, error, id) => [{ type: "SWAPI", id }]
         })
     })
 })
 
-// This is a hook used to load data from this api. 
-// There is sme magic here where the name "getSwapi" is turned into "useGetSwapiQuery"
-// getSwapi -> use GetSwapi Query
+// RTK Query automatically generates hooks based on the endpoint names.
+// getSwapi -> useGetSwapiQuery, useLazyGetSwapiQuery
 export const { useGetSwapiQuery, useLazyGetSwapiQuery } = swapiApiSlice

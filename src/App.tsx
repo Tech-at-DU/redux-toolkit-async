@@ -1,9 +1,9 @@
 import "./App.css"
 import { Counter } from "./features/counter/Counter"
-import { Quotes } from "./features/quotes/Quotes"
+import { Quotes } from "./features/quotes/Quotes.js"
 
-import { SWAPI } from "./features/swapi/SWAPI"
-import { SWAPI2 } from "./features/swapi/SWAPI2"
+import { SWAPI } from "./features/swapi/SWAPI.jsx"
+import { SWAPI2 } from "./features/swapi/SWAPI2.jsx"
 
 const App = () => {
   return (

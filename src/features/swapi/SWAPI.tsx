@@ -1,66 +1,73 @@
 import { useState } from 'react'
 import { useGetSwapiQuery } from './swapiApiSlice'
-// Import the hook from your slice
+// Import the generated hook from the API slice
 
-// This component displays both the form and the data loaded from the api hook. 
+// This component renders a form to enter a character ID and displays the corresponding data from SWAPI.
 export const SWAPI = () => {
-  // We'll use this to store the id of a character we want to load. 
+  // Store the ID of the character to fetch
   const [id, setId] = useState(1)
-  // Use a lazy query
-  // const [trigger, result, lastPromisedInfo] = useLazyGetSwapiQuery()
-  // console.log('---------')
-  // console.log(result)
-  // console.log(lastPromisedInfo)
-  // console.log('---------')
 
-  // Use the api hook we created to load data from the web api
+  // If you want to use the lazy query variant, uncomment this:
+  // const [trigger, result, lastPromisedInfo] = useLazyGetSwapiQuery()
+  // console.log(result, lastPromisedInfo)
+
+  // Use the query hook to fetch data from the SWAPI API
   const { data, isError, isLoading, isSuccess, error } = useGetSwapiQuery(id)
 
-  // Testing! 
-  console.log('**************')
-  console.log(data)
-  console.log(isError)
-  console.log(error)
-  console.log(isLoading)
-  console.log(isSuccess)
-  console.log('**************')
+  // Debugging output to inspect the hook's state
+  console.log('******* SWAPI *******')
+  console.log('Data:', data)
+  console.log('Error:', isError ? error : 'No error')
+  console.log('Loading:', isLoading)
+  console.log('Success:', isSuccess)
+  console.log('********SWAPI *******')
 
-  // Make a component to display loading, error, or data
+  // Helper component to render the appropriate UI based on the query state
   const DisplayData = () => {
-    // If there is an error. 
     if (isError) {
-      // Display an error (I'm missing types for this!)
-      return <div>swapi Error: {error.status} {error.data.detail}</div>
+      // Display an error message. Consider adding a type for 'error' to avoid type warnings.
+      return <div>SWAPI Error: {error.status} - {error.data?.detail}</div>
     }
 
     if (isLoading) {
-      // Display a loading message 
-      return <div>Swapi Loading...</div>
+      // Show a loading indicator
+      return <div>Loading character data...</div>
     }
-    if (isSuccess) { 
-      // Success! Display some data! 
-      return (<div>
-        <p>Name: { data.name } eye color: { data.eye_color } mass: {data.mass}</p>
-      </div>)
-    }
-  }
 
+    if (isSuccess && data) {
+      // Render the fetched character data
+      return (
+        <div>
+          <p>
+            Name: {data.name} | Eye Color: {data.eye_color} | Mass: {data.mass}
+          </p>
+        </div>
+      )
+    }
+
+    return null
+  }
 
   return (
     <div>
       <form>
         <input 
+          type="number"
           value={id}
           onChange={e => setId(Number(e.target.value))}
         />
         <button
+          // If using the lazy query, call trigger(id) here
           // onClick={() => trigger(id)}
-        >Submit</button>
+          type="button"
+        >
+          Submit
+        </button>
       </form>
-      <div>****</div>
+      <small>This component loads data with input. Any time the field chnages data is loaded.</small>
+      <div>---</div>
       <DisplayData />
-      <div>****</div>
+      <div>---</div>
     </div>
   )
 }
-
