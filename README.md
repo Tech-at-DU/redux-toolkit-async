@@ -1,3 +1,341 @@
+# Redux Toolkit Query with Vite
+
+This example demonstrates how to use **RTK Query** with **Vite** and **TypeScript** to fetch data in a modern React app.
+
+---
+
+## 🚀 Getting Started: Create a Vite + Redux Toolkit Project
+
+### Setting up a project using with the TypeScript template:
+
+To create a new project using the official Vite + Redux Toolkit + TypeScript template:
+
+```bash
+npx degit reduxjs/redux-templates/packages/vite-template-redux my-app
+cd my-app
+npm install
+```
+
+This sets up a modern React + Redux + TypeScript app with Vite and includes testing tools like Vitest.
+
+🔗 [Redux Toolkit Getting Started](https://redux-toolkit.js.org/introduction/getting-started)
+
+---
+
+## Setting up a project from scratch without TypeScript: 
+
+Absolutely! Here's a section you can add to your README that provides **alternative setup instructions for a Vite + React + RTK Query project using plain JavaScript (no TypeScript)**.
+
+---
+
+## 🛠️ Alternative Setup: Vite + RTK Query with JavaScript
+
+If you prefer to use **JavaScript instead of TypeScript**, you can set up a Vite + React + Redux Toolkit project manually with the following steps:
+
+### ✅ 1. Create a New Vite Project with React
+
+```bash
+npm create vite@latest my-app -- --template react
+cd my-app
+npm install
+```
+
+---
+
+### ✅ 2. Install Redux Toolkit and React Redux
+
+```bash
+npm install @reduxjs/toolkit react-redux
+```
+
+---
+
+### ✅ 3. Create the Redux Store
+
+Create a file at `src/app/store.js`:
+
+```js
+import { configureStore } from '@reduxjs/toolkit';
+import { swapiApi } from '../features/swapi/swapiApi';
+
+export const store = configureStore({
+  reducer: {
+    [swapiApi.reducerPath]: swapiApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(swapiApi.middleware),
+});
+```
+
+---
+
+### ✅ 4. Define an RTK Query Slice
+
+Create a file at `src/features/swapi/swapiApi.js`:
+
+```js
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const swapiApi = createApi({
+  reducerPath: 'swapiApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
+  endpoints: (builder) => ({
+    getPeople: builder.query({
+      query: () => 'people',
+    }),
+  }),
+});
+
+export const { useGetPeopleQuery } = swapiApi;
+```
+
+---
+
+### ✅ 5. Provide the Store to Your App
+
+Update `src/main.jsx`:
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { Provider } from 'react-redux';
+import { store } from './app/store';
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+```
+
+---
+
+### ✅ 6. Use the Query in a Component
+
+In `src/App.jsx`:
+
+```jsx
+import { useGetPeopleQuery } from './features/swapi/swapiApi';
+
+function App() {
+  const { data, error, isLoading } = useGetPeopleQuery();
+
+  if (isLoading) return <div>Loading...</div>;
+  if (error) return <div>Error loading data.</div>;
+
+  return (
+    <div>
+      <h1>Star Wars Characters</h1>
+      <ul>
+        {data.results.map((character) => (
+          <li key={character.name}>{character.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
+```
+
+---
+
+This setup avoids TypeScript and sticks to JavaScript, making it ideal for beginner-friendly projects or faster prototyping.
+
+---
+
+## 🔧 Add a New RTK Query API Slice
+
+To use **RTK Query**:
+
+1. Create a new slice file (e.g., `features/swapi/swapiApi.ts`) and define your API:
+
+```ts
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+
+export const swapiApi = createApi({
+  reducerPath: 'swapiApi',
+  baseQuery: fetchBaseQuery({ baseUrl: 'https://swapi.dev/api/' }),
+  endpoints: (builder) => ({
+    getPeople: builder.query({
+      query: () => 'people',
+    }),
+  }),
+});
+
+export const { useGetPeopleQuery } = swapiApi;
+```
+
+2. Add the API to your store (`app/store.ts`):
+
+```ts
+import { configureStore } from '@reduxjs/toolkit';
+import { swapiApi } from '../features/swapi/swapiApi';
+
+export const store = configureStore({
+  reducer: {
+    [swapiApi.reducerPath]: swapiApi.reducer,
+  },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat(swapiApi.middleware),
+});
+```
+
+3. Wrap your app in the Redux `<Provider>` (`main.tsx`):
+
+```tsx
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { store } from './app/store';
+import { Provider } from 'react-redux';
+
+ReactDOM.createRoot(document.getElementById('root')!).render(
+  <Provider store={store}>
+    <App />
+  </Provider>
+);
+```
+
+---
+
+## 📦 What's in This Project?
+
+The project in this repository includes a few examples using RTK Query, including:
+
+### 1. `SWAPI` – Standard Query
+
+* Loads data when the component **renders**.
+* Uses the hook generated by `createApi`.
+
+### 2. `SWAPI2` – Lazy Query
+
+* Loads data **on demand** using a button.
+* Uses `useLazy...Query` to manually trigger the request.
+
+🔗 [RTK Query Overview](https://redux-toolkit.js.org/rtk-query/overview)
+
+---
+
+## 🎯 Challenges
+
+1. **Modify SWAPI Components**
+   Display additional fields like height, birth year, or gender.
+
+2. **Create a Weather Query**
+   Use the [OpenWeatherMap API](https://openweathermap.org/api) and follow the structure of the SWAPI example to create your own weather data component.
+
+---
+
+## ✏️ Step-by-Step: Build Your Own API Slice
+
+1. **Study the Examples**
+   Look at `features/quotes` or `features/swapi`.
+
+2. **Create a New Folder**
+   Add a new folder inside `features/` for your API (e.g., `features/weather/`).
+
+3. **Add Two Files**
+
+   * `weatherApi.ts`: Your `createApi` slice.
+   * `WeatherComponent.tsx`: A React component using the generated hook.
+
+4. **Define the API Slice**
+   Use `createApi` with:
+
+   * `baseQuery`
+   * `reducerPath`
+   * `tagTypes` (optional)
+   * `endpoints` that return `builder.query()` or `builder.mutation()`
+
+5. **Export the Hook**
+   Hooks are auto-generated from your endpoint name:
+
+   * `getBagels` → `useGetBagelsQuery`
+
+6. **Add to the Store**
+   Import your slice into `store.ts`:
+
+   * Add its reducer to `configureStore`.
+   * Add its middleware using `.concat()`.
+
+7. **Use the Hook in Your Component**
+
+   * Call the hook: `useGetBagelsQuery()`
+   * Handle `isLoading`, `isError`, and `data`
+   * Display the result
+
+🧙‍♂️ **Magic Explained:** RTK Query auto-generates hooks from your endpoint names, saving you boilerplate code and ensuring consistency.
+
+---
+
+## 🧰 Project Template Details
+
+This project uses [`vite-template-redux`](https://github.com/reduxjs/redux-templates/tree/master/packages/vite-template-redux):
+
+* ⚡ Vite for fast builds and dev server
+* ⚛️ React + Redux Toolkit + TypeScript
+* 🔬 Vitest and React Testing Library
+
+### Available Scripts
+
+```bash
+npm run dev      # Start the dev server
+npm run build    # Build the app for production
+npm run preview  # Preview the built app locally
+npm run test     # Run tests
+```
+
+---
+
+## 🙌 Inspired By
+
+* [Create React App](https://create-react-app.dev/)
+* [Redux Toolkit](https://redux-toolkit.js.org/)
+* [Vite](https://vitejs.dev/)
+* [Vitest](https://vitest.dev/)
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # Redux Tool Kit Query 
 
 This example started with Create React with the Redux Toolkit template. 
